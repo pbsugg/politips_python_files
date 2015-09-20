@@ -41,14 +41,14 @@ class CountAllCategories:
 
 class CategoryCount:
 
-    def __init__(self, file):
-        self.file = file
-        # self.category = category
+    def __init__(self, file, category_name):
+        self.category = Category.where('name', category_name)
+        self.lemm = nltk.WordNetLemmatizer()
+        self.doc = self.normalize(file)
         self.category_count = 0
         # self.stem = nltk.stem.porter.PorterStemmer()
-        self.lemm = nltk.WordNetLemmatizer()
-    def normalize(self):
-        encoded_doc = codecs.open(self.file, encoding='utf-8', mode='rU')
+    def normalize(self, file):
+        encoded_doc = codecs.open(file, encoding='utf-8', mode='rU')
         raw = encoded_doc.read()
         word_tokenized_doc = nltk.word_tokenize(raw)
         lowered_doc = [w.lower() for w in word_tokenized_doc]
@@ -56,8 +56,9 @@ class CategoryCount:
         # stemmed_doc = [self.stem.stem_word(w) for w in lowered_doc]
         lemmatized_doc = [self.lemm.lemmatize(w) for w in lowered_doc]
         return lemmatized_doc
-    def count_term_frequency(self, term):
-        doc = self.normalize()
+    def count_term_frequency(self):
+        for keyword in self.category.first().keywords:
+            print(keyword.keyword)
         count = doc.count(term)
         self.category_count += count
         return self.category_count
@@ -71,6 +72,8 @@ class CategoryCount:
 # data["children"].append(category_data)
 
 # from parser import *
-test = CountAllCategories("test.txt", data)
-test.what()
-# test.run()
+test = CategoryCount("test.txt", "Immigration")
+print(test.count_term_frequency())
+
+# print(test.file)
+# print(test.category.first().keywords[0].keyword)
