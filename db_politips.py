@@ -30,4 +30,3 @@ class Category(Model):
 
 class Keyword(Model):
     pass
-    
