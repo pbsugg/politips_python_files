@@ -2,17 +2,6 @@ from orator import DatabaseManager, Model
 import psycopg2
 import psycopg2.extras
 
-config = {
-    'postgresql': {
-        'driver': 'postgres',
-        'database': 'politips_development'
-    }
-}
-
-db = DatabaseManager(config)
-Model.set_connection_resolver(db)
-print(db)
-
 class Candidate(Model):
 
     @property
@@ -30,4 +19,3 @@ class Category(Model):
 
 class Keyword(Model):
     pass
-    
